@@ -28,7 +28,7 @@ C#公用核心基础库,包含了Json,Xml,ADO.NET数据库操作兼容以下数�
 
 ## XiaoFeng.Core
 
-XiaoFeng.Core generator with [XiaoFeng](https://github.com/zhuovi/XiaoFeng.Core).
+XiaoFeng.Core generator with [XiaoFeng.Core](https://github.com/zhuovi/XiaoFeng.Core).
 
 ## Install
 
