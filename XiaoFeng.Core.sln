@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XiaoFeng.Core", "XiaoFeng.Core.csproj", "{E81AAB92-E8D6-474C-B68D-0ADD6A4BC294}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XiaoFeng.Redis", "..\XiaoFeng.Redis\XiaoFeng.Redis.csproj", "{CB7B9DC9-4FBC-4C62-98A3-87C0305797E7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp", "..\ConsoleApp\ConsoleApp.csproj", "{0DCC184A-FF0A-4745-89CD-26203F05CA13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XiaoFeng.Net", "..\XiaoFeng.Net\XiaoFeng.Net.csproj", "{7B80132A-D895-48BA-8732-982DC1414FAE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XiaoFeng.Ftp", "..\XiaoFeng.Ftp\XiaoFeng.Ftp.csproj", "{44E12D4C-9B45-4C31-9CBA-A04F7612B942}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XiaoFeng.AutoSql", "..\XiaoFeng.AutoSql\XiaoFeng.AutoSql.csproj", "{038347F9-022C-49F8-87DE-549E883E5DD3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E81AAB92-E8D6-474C-B68D-0ADD6A4BC294}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E81AAB92-E8D6-474C-B68D-0ADD6A4BC294}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E81AAB92-E8D6-474C-B68D-0ADD6A4BC294}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E81AAB92-E8D6-474C-B68D-0ADD6A4BC294}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB7B9DC9-4FBC-4C62-98A3-87C0305797E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB7B9DC9-4FBC-4C62-98A3-87C0305797E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB7B9DC9-4FBC-4C62-98A3-87C0305797E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB7B9DC9-4FBC-4C62-98A3-87C0305797E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DCC184A-FF0A-4745-89CD-26203F05CA13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DCC184A-FF0A-4745-89CD-26203F05CA13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DCC184A-FF0A-4745-89CD-26203F05CA13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DCC184A-FF0A-4745-89CD-26203F05CA13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B80132A-D895-48BA-8732-982DC1414FAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B80132A-D895-48BA-8732-982DC1414FAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B80132A-D895-48BA-8732-982DC1414FAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B80132A-D895-48BA-8732-982DC1414FAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44E12D4C-9B45-4C31-9CBA-A04F7612B942}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44E12D4C-9B45-4C31-9CBA-A04F7612B942}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44E12D4C-9B45-4C31-9CBA-A04F7612B942}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44E12D4C-9B45-4C31-9CBA-A04F7612B942}.Release|Any CPU.Build.0 = Release|Any CPU
+		{038347F9-022C-49F8-87DE-549E883E5DD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{038347F9-022C-49F8-87DE-549E883E5DD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{038347F9-022C-49F8-87DE-549E883E5DD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{038347F9-022C-49F8-87DE-549E883E5DD3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B0C3477C-6382-4C1C-9F2E-D538CC9F710E}
+	EndGlobalSection
+EndGlobal
