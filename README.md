@@ -35,20 +35,21 @@ XiaoFeng.Core generator with [XiaoFeng.Core](https://github.com/zhuovi/XiaoFeng.
 .NET CLI
 
 ```
-$ dotnet add package XiaoFeng
+$ dotnet add package XiaoFeng.Core
 ```
 
 Package Manager
 
 ```
-PM> Install-Package XiaoFeng
+PM> Install-Package XiaoFeng.Core
 ```
 
 PackageReference
 
 ```
-<PackageReference Include="XiaoFeng" Version="2.0.0" />
-`
+<PackageReference Include="XiaoFeng.Core" Version="2.0.1" />
+```
+
 
 # XiaoFeng.HttpHelper
 
