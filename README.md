@@ -71,7 +71,7 @@ Cake
 #tool nuget:?package=XiaoFeng.Core&version=2.0.2
 ```
 
-# XiaoFeng.HttpHelper
+# XiaoFeng.HttpHelper 网络请求库
 
 HttpHelper 是Http模拟请求库。
 
@@ -389,7 +389,7 @@ var i = "a1b2c3".ReplacePattern(@"\d+",m=>{
 i的值为："aa1ba2ca2";
 ```
 
-# 作业调度
+# XiaoFeng.Threading.JobScheduler 作业调度
 
 作业调度其实就是一个定时器，定时完成某件事，比如：每分钟执行一次，每小时执行一次，每天执行一次，第二周几执行，每月几号几点执行，间隔多少个小时执行一次等。
 
@@ -726,7 +726,7 @@ DescriptionConverter
 如果不想定义模型，则XiaoFeng.Xml中提供了一个万能的对象模型就是XmlValue对象。
 Xml序列化，反序列化就讲到这里，具体操作还需要自己去实践操作。
 
-# XiaoFeng.Json Json序列号
+# XiaoFeng.Json Json序列化
 
 JSON序列化操作，就是把数据对象序列化成JSON数据，也可以把JSON数据反序列化成数据对象。
 命名空间是：XiaoFeng.Json
