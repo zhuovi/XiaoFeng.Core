@@ -209,7 +209,7 @@ namespace XiaoFeng.Http
         /// <summary>
         /// 数据
         /// </summary>
-        public Dictionary<string, string> Data { get; set; }
+        public IDictionary<string, string> Data { get; set; }
         /// <summary>
         /// Body请求数据
         /// </summary>
