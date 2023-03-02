@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
+using System.IO.Pipes;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Security;
+using System.Net.Sockets;
+using System.Runtime.ConstrainedExecution;
+using System.Runtime.InteropServices.ComTypes;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
@@ -146,10 +151,22 @@ namespace XiaoFeng.Http
         /// 请求标头值 默认为text/html, application/xhtml+xml, */*
         /// </summary>
         public string Accept { get; set; } = "text/html, application/xhtml+xml, */*";
-        /// <summary>
-        /// 获取或设置一个值，该值指示请求是否应跟随重定向响应。
-        /// </summary>
-        public Boolean AllowAutoRedirect { get; set; } = true;
+		/// <summary>
+		/// Accept-Charset 标头，指定响应可接受的内容编码。
+		/// </summary>
+		public string AcceptEncoding { get; set; }
+		/// <summary>
+		/// Accept-Langauge 标头，指定用于响应的首选自然语言。
+		/// </summary>
+		public string AcceptLanguage { get; set; }
+		/// <summary>
+		/// Cache-Control 标头，指定请求/响应链上所有缓存控制机制必须服从的指令。
+		/// </summary>
+		public CacheControlHeaderValue CacheControl { get; set; }
+		/// <summary>
+		/// 获取或设置一个值，该值指示请求是否应跟随重定向响应。
+		/// </summary>
+		public Boolean AllowAutoRedirect { get; set; } = true;
         /// <summary>
         /// 获取或设置请求将跟随的重定向的最大数目。
         /// </summary>
@@ -157,7 +174,7 @@ namespace XiaoFeng.Http
         /// <summary>
         /// 获取或设置一个值，该值指示是否与 Internet 资源建立持久性连接。
         /// </summary>
-        public Boolean KeepAlive { get; set; } = false;
+        public Boolean KeepAlive { get; set; } = true;
         /// <summary>
         /// 设置509证书集合
         /// </summary>
@@ -177,7 +194,7 @@ namespace XiaoFeng.Http
         /// <summary>
         /// 指定 Schannel 安全包支持的安全协议
         /// </summary>
-        public SecurityProtocolType ProtocolType { get; set; } = SecurityProtocolType.Tls12;
+        public SecurityProtocolType ProtocolType { get; set; } = SecurityProtocolType.Tls12 ;
         /// <summary>
         /// 获取或设置用于请求的 HTTP 版本。返回结果:用于请求的 HTTP 版本。默认为 System.Net.HttpVersion.Version11。
         /// </summary>
@@ -238,7 +255,7 @@ namespace XiaoFeng.Http
 
         #region 方法
 
-        #region 获取响应数据
+        #region 获取响应数据 HttpClient
         /// <summary>
         /// 获取响应数据
         /// </summary>
@@ -247,7 +264,9 @@ namespace XiaoFeng.Http
         {
             if (this.Address.IsNullOrEmpty() || !this.Address.IsSite()) return null;
             if (this.HttpCore == HttpCore.HttpWebRequest)
-                return await this.GetHttpResponseAsync();
+                return await this.GetHttpResponseAsync().ConfigureAwait(false);
+            else if (this.HttpCore == HttpCore.HttpSocket)
+                return await this.GetHttpSocketResponseAsync().ConfigureAwait(false);
             var Response = new HttpResponse();
             /*回收*/
             GC.Collect();
@@ -343,13 +362,26 @@ namespace XiaoFeng.Http
             /*Accept*/
             if (this.Accept.IsNotNullOrWhiteSpace())
                 this.Request.Headers.Accept.ParseAdd(this.Accept);
-
+            
             /*UserAgent客户端的访问类型，包括浏览器版本和操作系统信息*/
             this.Request.Headers.UserAgent.Clear();
             this.Request.Headers.UserAgent.ParseAdd(this.UserAgent);
             /*编码*/
+            if (this.AcceptEncoding.IsNotNullOrWhiteSpace())
+            {
             this.Request.Headers.AcceptEncoding.Clear();
-            this.Request.Headers.AcceptEncoding.ParseAdd(this.Encoding.WebName);
+                this.Request.Headers.AcceptEncoding.ParseAdd(this.AcceptEncoding);
+            }
+            if (this.AcceptLanguage.IsNotNullOrWhiteSpace())
+            {
+                this.Request.Headers.AcceptLanguage.Clear();
+                this.Request.Headers.AcceptLanguage.ParseAdd(this.AcceptLanguage);
+            }
+            if (this.CacheControl != null)
+            {
+                this.Request.Headers.CacheControl = this.CacheControl;
+            }
+
             this.Request.Headers.AcceptCharset.ParseAdd(this.Encoding.WebName);
             /*设置安全凭证*/
             this.ClientHandler.Credentials = this.Credentials;
@@ -401,7 +433,7 @@ namespace XiaoFeng.Http
                 this.EndTime = DateTime.Now;
                 Response.HttpCore = this.HttpCore;
                 Response.SetBeginAndEndTime(this.BeginTime, this.EndTime);
-                await Response.InitAsync();
+                await Response.InitAsync().ConfigureAwait(false);
                 return Response;
             }
             catch (HttpRequestException ex)
@@ -412,7 +444,7 @@ namespace XiaoFeng.Http
                     {
                         Response.Response.Headers.Add(kv.Key, kv.Value);
                     });
-                    await Response.InitAsync();
+                    await Response.InitAsync().ConfigureAwait(false);
                 }
                 return Response;
             }
@@ -424,7 +456,7 @@ namespace XiaoFeng.Http
                     {
                         Response.Response.Headers.Add(kv.Key, kv.Value);
                     });
-                    await Response.InitAsync();
+                    await Response.InitAsync().ConfigureAwait(false);
                 }
                 return Response;
             }
@@ -436,7 +468,7 @@ namespace XiaoFeng.Http
                     {
                         Response.Response.Headers.Add(kv.Key, kv.Value);
                     });
-                    await Response.InitAsync();
+                    await Response.InitAsync().ConfigureAwait(false);
                 }
                 return Response;
             }
@@ -470,7 +502,7 @@ namespace XiaoFeng.Http
         public HttpResponse GetResponse() => this.GetResponseAsync().ConfigureAwait(false).GetAwaiter().GetResult();
         #endregion
 
-        #region 获取响应数据
+        #region 获取响应数据 HttpWebRequest
         /// <summary>
         /// 获取响应数据
         /// </summary>
@@ -500,45 +532,9 @@ namespace XiaoFeng.Http
                 this.RequestHttp.Proxy = this.WebProxy;
             /*设置Http版本*/
             if (this.ProtocolVersion != null) this.RequestHttp.ProtocolVersion = this.ProtocolVersion;
-            byte[] RequestData = Array.Empty<byte>();
-            if (",POST,GET,DELETE,PUT,".IndexOf("," + this.Method.Method.ToUpper() + ",", StringComparison.OrdinalIgnoreCase) > -1)
-            {
-                if (this.FormData == null)
-                {
-                    if (this.Data != null && this.Data.Any())
-                    {
-                        if (this.Method == "POST")
-                        {
-                            if (this.ContentType.IsNullOrEmpty())
-                                this.ContentType = "application/x-www-form-urlencoded";
-                            RequestData = this.Data.ToQuery().GetBytes(this.Encoding);
-                        }
-                    }
-                    else if (this.BodyData.IsNotNullOrEmpty())
-                    {
-                        this.Method = HttpMethod.Post;
-                        if (this.ContentType.IsNullOrEmpty())
-                            this.ContentType = "application/json";
-                        RequestData = this.BodyData.GetBytes(this.Encoding);
-                    }
-                    if (this.ContentType.IsNotNullOrEmpty())
-                        this.RequestHttp.ContentType = this.ContentType;
-                }
-                else
-                {
-                    this.Method = HttpMethod.Post;
-                    if (this.Data.IsNotNullOrEmpty())
-                    {
-                        this.Data.Each(kv =>
-                        {
-                            this.FormData.Add(new FormData(kv.Key, kv.Value, FormType.Text));
-                        });
-                    }
-                    var boundary = this.GetBoundary();
-                    this.ContentType = "multipart/form-data; boundary=" + boundary;
-                    RequestData = this.GetBytes(boundary);
-                }
-            }
+
+            byte[] RequestData = this.GetReuqestBody();
+
             this.RequestHttp.ServicePoint.Expect100Continue = this.Expect100Continue;
             this.RequestHttp.Method = this.Method.Method;
             this.RequestHttp.Timeout = this.Timeout;
@@ -549,7 +545,15 @@ namespace XiaoFeng.Http
             /*Accept*/
             if (this.Accept.IsNotNullOrWhiteSpace())
                 this.RequestHttp.Accept = this.Accept;
-            
+
+            if (this.AcceptEncoding.IsNotNullOrWhiteSpace())
+                this.RequestHttp.Headers.Add(HttpRequestHeader.AcceptEncoding, this.AcceptEncoding);
+
+            if (this.AcceptLanguage.IsNotNullOrWhiteSpace())
+                this.RequestHttp.Headers.Add(HttpRequestHeader.AcceptLanguage, this.AcceptLanguage);
+
+            if (this.CacheControl != null)
+                this.RequestHttp.Headers.Add(HttpRequestHeader.CacheControl, this.CacheControl.ToString());
             if (this.ContentType.IsNullOrEmpty())
                 this.ContentType = "text/html";
             /*请求内容类型*/
@@ -585,16 +589,16 @@ namespace XiaoFeng.Http
                 Response.Request = this;
                 this.BeginTime = DateTime.Now;
                 /*请求数据*/
-                Response.ResponseHttp = await this.RequestHttp.GetResponseAsync() as HttpWebResponse;
+                Response.ResponseHttp = await this.RequestHttp.GetResponseAsync().ConfigureAwait(false) as HttpWebResponse;
                 this.EndTime = DateTime.Now;
                 Response.HttpCore = this.HttpCore;
                 Response.SetBeginAndEndTime(this.BeginTime, this.EndTime);
-                await Response.InitHttpAsync();
+                await Response.InitHttpAsync().ConfigureAwait(false);
             }
             catch (WebException ex)
             {
                 if (ex.Response != null)
-                    using (Response.ResponseHttp = (HttpWebResponse)ex.Response) await Response.InitHttpAsync();
+                    using (Response.ResponseHttp = (HttpWebResponse)ex.Response) await Response.InitHttpAsync().ConfigureAwait(false);
                 else
                 {
                     Response.StatusCode = HttpStatusCode.BadRequest;
@@ -622,17 +626,29 @@ namespace XiaoFeng.Http
             }
             return Response;
         }
-        #endregion
+		#endregion
 
-        #region 通过设置这个属性，可以在发出连接的时候绑定客户端发出连接所使用的IP地址。
-        /// <summary>
-        /// 通过设置这个属性，可以在发出连接的时候绑定客户端发出连接所使用的IP地址。 
-        /// </summary>
-        /// <param name="servicePoint"></param>
-        /// <param name="remoteEndPoint"></param>
-        /// <param name="retryCount"></param>
-        /// <returns></returns>
-        private IPEndPoint BindIPEndPointCallback(ServicePoint servicePoint, IPEndPoint remoteEndPoint, int retryCount)
+		#region 获取响应数据 Socket
+		/// <summary>
+		/// 获取响应数据
+		/// </summary>
+		/// <returns></returns>
+		public async Task<HttpResponse> GetHttpSocketResponseAsync()
+        {
+            var httpSocket = new HttpSocket(this);
+            return await httpSocket.SendRequestAsync().ConfigureAwait(false);
+        }
+		#endregion
+
+		#region 通过设置这个属性，可以在发出连接的时候绑定客户端发出连接所使用的IP地址。
+		/// <summary>
+		/// 通过设置这个属性，可以在发出连接的时候绑定客户端发出连接所使用的IP地址。 
+		/// </summary>
+		/// <param name="servicePoint"></param>
+		/// <param name="remoteEndPoint"></param>
+		/// <param name="retryCount"></param>
+		/// <returns></returns>
+		private IPEndPoint BindIPEndPointCallback(ServicePoint servicePoint, IPEndPoint remoteEndPoint, int retryCount)
         {
             return this.IPEndPoint;
         }
@@ -650,13 +666,63 @@ namespace XiaoFeng.Http
             var f = m.GetMethod("IdleServicePointTimeoutCallback", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
             f.Invoke(null, new object[] { null, 0, servicePoint });*/
         }
-        #endregion
+		#endregion
 
-        #region 分界线
-        /// <summary>
-        /// 分界线
-        /// </summary>
-        public string GetBoundary()
+		#region 获取请求Body
+		/// <summary>
+		/// 获取请求Body
+		/// </summary>
+		/// <returns></returns>
+		public byte[] GetReuqestBody()
+        {
+			byte[] RequestData = Array.Empty<byte>();
+			if (",POST,GET,DELETE,PUT,".IndexOf("," + this.Method.Method.ToUpper() + ",", StringComparison.OrdinalIgnoreCase) > -1)
+			{
+				if (this.FormData == null)
+				{
+					if (this.Data != null && this.Data.Any())
+					{
+						if (this.Method == "POST")
+						{
+							if (this.ContentType.IsNullOrEmpty())
+								this.ContentType = "application/x-www-form-urlencoded";
+							RequestData = this.Data.ToQuery().GetBytes(this.Encoding);
+						}
+					}
+					else if (this.BodyData.IsNotNullOrEmpty())
+					{
+						this.Method = HttpMethod.Post;
+						if (this.ContentType.IsNullOrEmpty())
+							this.ContentType = "application/json";
+						RequestData = this.BodyData.GetBytes(this.Encoding);
+					}
+					if (this.ContentType.IsNotNullOrEmpty())
+						this.RequestHttp.ContentType = this.ContentType;
+				}
+				else
+				{
+					this.Method = HttpMethod.Post;
+					if (this.Data.IsNotNullOrEmpty())
+					{
+						this.Data.Each(kv =>
+						{
+							this.FormData.Add(new FormData(kv.Key, kv.Value, FormType.Text));
+						});
+					}
+					var boundary = this.GetBoundary();
+					this.ContentType = "multipart/form-data; boundary=" + boundary;
+					RequestData = this.GetBytes(boundary);
+				}
+			}
+            return RequestData;
+		}
+		#endregion
+
+		#region 分界线
+		/// <summary>
+		/// 分界线
+		/// </summary>
+		public string GetBoundary()
         {
             var Boundary =
 #if NETCORE
@@ -739,7 +805,10 @@ namespace XiaoFeng.Http
                     ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(CheckValidationResult);
                     /*将证书添加到请求里*/
                     var cert = this.CertPath.GetBasePath();
-                    ClientCerts.Add(this.CertPassWord.IsNullOrEmpty() ? new X509Certificate2(cert) : new X509Certificate2(cert, this.CertPassWord));
+                    if (File.Exists(cert))
+                    {
+                        ClientCerts.Add(this.CertPassWord.IsNullOrEmpty() ? new X509Certificate2(cert) : new X509Certificate2(cert, this.CertPassWord));
+                    }
                 }
                 else
                 {
