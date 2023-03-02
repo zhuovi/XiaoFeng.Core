@@ -109,7 +109,7 @@ namespace XiaoFeng.Http
             get
             {
                 if (this._Html.IsNullOrEmpty())
-                    this._Html = this.Data.GetString();
+                    this._Html = this.Data.GetString(this.CharacterSet);
                 return this._Html;
             }
         }
@@ -241,10 +241,6 @@ namespace XiaoFeng.Http
 		{
             if (this.Headers == null || this.Headers.Count == 0) return;
 
-            //获取最后访问的URl
-            //this.ResponseUri = this.Response.Headers.Location;
-            //if (this.ResponseUri.IsNullOrEmpty())
-            //	this.ResponseUri = this.Request.Request.RequestUri;
             this.ProtocolVersion = this.Request.ProtocolVersion;
             if(this.Headers.TryGetValue("Content-Encoding",out var ContentEncoding))
             {
