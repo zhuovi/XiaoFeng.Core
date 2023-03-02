@@ -29,40 +29,40 @@ XiaoFeng.Core generator with [XiaoFeng.Core](https://github.com/zhuovi/XiaoFeng.
 .NET CLI
 
 ```
-$ dotnet add package XiaoFeng.Core --version 2.0.4
+$ dotnet add package XiaoFeng.Core --version 2.1.0
 ```
 
 Package Manager
 
 ```
-PM> Install-Package XiaoFeng.Core --Version 2.0.4
+PM> Install-Package XiaoFeng.Core --Version 2.1.0
 ```
 
 PackageReference
 
 ```
-<PackageReference Include="XiaoFeng.Core" Version="2.0.4" />
+<PackageReference Include="XiaoFeng.Core" Version="2.1.0" />
 ```
 Paket CLI
 
 ```
-> paket add XiaoFeng.Core --version 2.0.4
+> paket add XiaoFeng.Core --version 2.1.0
 ```
 
 Script & Interactive
 
 ```
-> #r "nuget: XiaoFeng.Core, 2.0.4"
+> #r "nuget: XiaoFeng.Core, 2.1.0"
 ```
 
 Cake
 
 ```
 // Install XiaoFeng.Core as a Cake Addin
-#addin nuget:?package=XiaoFeng.Core&version=2.0.4
+#addin nuget:?package=XiaoFeng.Core&version=2.1.0
 
 // Install XiaoFeng.Core as a Cake Tool
-#tool nuget:?package=XiaoFeng.Core&version=2.0.4
+#tool nuget:?package=XiaoFeng.Core&version=2.1.0
 ```
 # XiaoFeng 扩展方法
 
@@ -375,7 +375,8 @@ set.Save();
 
 # XiaoFeng.HttpHelper 网络请求库
 
-HttpHelper 是Http模拟请求库。
+HttpHelper 是Http模拟请求库。提供了三种内核，HttpClient,HttpWebRequest,HttpSocket
+默认用的是HttpClient内核
 
 ## 使用操作
 
@@ -385,6 +386,7 @@ HttpHelper 是Http模拟请求库。
 var result = await XiaoFeng.Http.HttpHelper.GetHtmlAsync(new XiaoFeng.Http.HttpRequest
 {
     Method = HttpMethod.Get,//不设置默认为Get请求
+    HttpCore = HttpCore.HttpClient,//不设置默认为HttpClient
     Address = "http://www.fayelf.com"
 });
 if (result.StatusCode == System.Net.HttpStatusCode.OK)
