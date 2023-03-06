@@ -58,6 +58,11 @@ namespace XiaoFeng.Redis
                 this.DbNum = dict["db"].ToCast<int>();
                 this.User = dict["user"];
                 this.Password = dict["pwd"];
+                if(this.Password.IsNullOrEmpty() && this.User.IsNotNullOrEmpty())
+                {
+                    this.Password = this.User;
+                    this.User = "";
+                }
                 var option = dict["option"];
                 if (option.IsNotNullOrEmpty())
                 {
@@ -145,7 +150,7 @@ namespace XiaoFeng.Redis
         /// <summary>
         /// 密码
         /// </summary>
-        [Description("密码")]
+        [Description("密码")] 
         public string Password { get; set; }
         /// <summary>
         /// 数据库
@@ -160,7 +165,7 @@ namespace XiaoFeng.Redis
         /// <summary>
         /// 读取数据超时时间
         /// </summary>
-        [Description("读取数据超时时间")]
+        [Description("读取数据超时时间")] 
         public int ReadTimeout { get; set; } = 10000;
         /// <summary>
         /// 是否是SSL
