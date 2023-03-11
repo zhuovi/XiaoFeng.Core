@@ -34,7 +34,4 @@
 		<DefineConstants Condition="'$(TargetFramework)'=='netstandard2.0'">$(DefineConstants);NETCORE;</DefineConstants>
 		<DefineConstants Condition="'$(TargetFramework)'=='netstandard2.1'">$(DefineConstants);NETCORE;</DefineConstants>
 	</PropertyGroup>
-	<ItemGroup>
-	  <Compile Remove="Data\DataMapping.cs" />
-	</ItemGroup>
 </Project>
