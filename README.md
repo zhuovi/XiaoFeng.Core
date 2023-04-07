@@ -88,6 +88,7 @@ Cake
 | XiaoFeng.TDengine | XiaoFeng.TDengine | :white_check_mark: | TDengine 客户端 | 开发中 |
 | XiaoFeng.GB28181 | XiaoFeng.GB28181 | :white_check_mark: | 视频监控库，SIP类库，GB28181协议 | 开发中 |
 | XiaoFeng.Onvif | XiaoFeng.Onvif | :white_check_mark: | 视频监控库Onvif协议 | XiaoFeng.Onvif 基于.NET平台使用C#封装Onvif常用接口、设备、媒体、云台等功能， 拒绝WCF服务引用动态代理生成wsdl类文件 ， 使用原生XML扩展标记语言封装参数，所有的数据流向都可控。 |
+| FayElf.Plugins.WeChat | FayElf.Plugins.WeChat | :white_check_mark: | 微信公众号，小程序类库 | 微信公众号，小程序类库。 |
 
 
 # XiaoFeng 扩展方法
@@ -654,10 +655,10 @@ var model = data.Query<Account>("select * from F_Tb_Account");
 ```csharp
 var job = new XiaoFeng.Threading.Job
 {
-     Async = true,
-     Name="作业名称",
-      TimerType= XiaoFeng.Threading.TimerType.Once,
-        StartTime= DateTime.Now.AddMinutes(5),
+    Async = true,
+    Name="作业名称",
+    TimerType= XiaoFeng.Threading.TimerType.Once,
+    StartTime= DateTime.Now.AddMinutes(5),
     SuccessCallBack = job =>
     {
         /*到时间执行任务*/
@@ -694,7 +695,7 @@ var job = new XiaoFeng.Threading.Job
     Async = true,
     Name = "作业名称",
     TimerType = XiaoFeng.Threading.TimerType.Day,
-    Time = new XiaoFeng.Threading.Time(2, 0, 0),
+    Times = new List<Times> { new Times(2,0,0),new Times(4,0,0) },
     StartTime = DateTime.Now.AddMinutes(5),
     SuccessCallBack = job =>
     {
@@ -702,7 +703,7 @@ var job = new XiaoFeng.Threading.Job
     }
 };
 ```
-当前作业为，5分钟后运行，然后每天2点执行一次。
+当前作业为，5分钟后运行，然后每天2点,4点各执行一次。
 
 4. 每周几几点执行,每月几号几点执行
 
@@ -712,8 +713,7 @@ var job = new XiaoFeng.Threading.Job
     Async = true,
     Name = "作业名称",
     TimerType = XiaoFeng.Threading.TimerType.Week,
-    DayOrWeekOrHour = new int[] { 1, 4 },
-    Time = new XiaoFeng.Threading.Time(2, 0, 0),
+    Times = new List<Times> { new Times(10,12,13,week:1),new Times(11,12,13,week:1) },
     StartTime = DateTime.Now.AddMinutes(5),
     SuccessCallBack = job =>
     {
@@ -723,8 +723,7 @@ var job = new XiaoFeng.Threading.Job
 job.Start();
 ```
 
-当前作业为，5分钟后运行，然后每周的周一，周四的两点执行一次。
-
+当前作业为，5分钟后运行，然后每周的周一10点12分13秒和11点12分13秒各执行一次。
 # XiaoFeng.Xml Xml序列化
 
 XML序列化操作就是把一个数据对象序列化成XML格式的数据，反序列化操作就是把一个XML格式的数据反序列化成一个数据对象。
