@@ -29,40 +29,40 @@ XiaoFeng.Core generator with [XiaoFeng.Core](https://github.com/zhuovi/XiaoFeng.
 .NET CLI
 
 ```
-$ dotnet add package XiaoFeng.Core --version 2.2.0
+$ dotnet add package XiaoFeng.Core --version 2.2.1
 ```
 
 Package Manager
 
 ```
-PM> Install-Package XiaoFeng.Core --Version 2.2.0
+PM> Install-Package XiaoFeng.Core --Version 2.2.1
 ```
 
 PackageReference
 
 ```
-<PackageReference Include="XiaoFeng.Core" Version="2.2.0" />
+<PackageReference Include="XiaoFeng.Core" Version="2.2.1" />
 ```
 Paket CLI
 
 ```
-> paket add XiaoFeng.Core --version 2.2.0
+> paket add XiaoFeng.Core --version 2.2.1
 ```
 
 Script & Interactive
 
 ```
-> #r "nuget: XiaoFeng.Core, 2.2.0"
+> #r "nuget: XiaoFeng.Core, 2.2.1"
 ```
 
 Cake
 
 ```
 // Install XiaoFeng.Core as a Cake Addin
-#addin nuget:?package=XiaoFeng.Core&version=2.2.0
+#addin nuget:?package=XiaoFeng.Core&version=2.2.1
 
 // Install XiaoFeng.Core as a Cake Tool
-#tool nuget:?package=XiaoFeng.Core&version=2.2.0
+#tool nuget:?package=XiaoFeng.Core&version=2.2.1
 ```
 # XiaoFeng 类库包含库
 | 命名空间 | 所属类库 | 开源状态 | 说明 | 包含功能 |
