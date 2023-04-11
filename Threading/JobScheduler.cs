@@ -30,7 +30,7 @@ namespace XiaoFeng.Threading
         /// </summary>
         public JobScheduler()
         {
-            
+
         }
         /// <summary>
         /// 设置带名称的调度
@@ -320,8 +320,9 @@ namespace XiaoFeng.Threading
                         LogHelper.Warn($"-- 暂无作业任务,终止调度器[{this.Name}]. --");
                         //Console.ResetColor();
                         break;
-                    }else
-                        this.Period = 1 * 60 * 60 * 1000;
+                    }
+                    else
+                        this.Period = 10 * 1000;
                     var now = DateTime.Now;
                     /*转换成并行计算*/
                     //Parallel.ForEach(this.SchedulerJobs.Values, job =>
@@ -710,7 +711,7 @@ namespace XiaoFeng.Threading
                 }
                 else
                 {
-                    period = ts * 1000;
+                    period = ts;
                     return false;
                 }
             }
@@ -803,7 +804,7 @@ namespace XiaoFeng.Threading
                         {
                             if (i == dts.Count)
                                 i = 0;
-                            job.NextTime =new DateTime(now.Year,now.Month,now.Day, dts[i].Hour.GetValueOrDefault(), dts[i].Minute, dts[i].Second);
+                            job.NextTime = new DateTime(now.Year, now.Month, now.Day, dts[i].Hour.GetValueOrDefault(), dts[i].Minute, dts[i].Second);
                             if (i == 0) job.NextTime = job.NextTime.Value.AddHours(1);
                             job.Period = (long)Math.Abs((job.NextTime.Value - now).TotalMilliseconds);
                             f = true;
