@@ -25,7 +25,7 @@
 		<PackageIconUrl>http://nuget.fayelf.com/x.png</PackageIconUrl>
 		<PackageTags>XiaoFeng;FAYELF;DataHelper;HttpHelper;JSON;XML;</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageReleaseNotes>修复JobScheduler时间不精确的bug;</PackageReleaseNotes>
+		<PackageReleaseNotes>修复JobScheduler时间不精确的bug;增加调度等待最小时长的配置;</PackageReleaseNotes>
 		<DelaySign>False</DelaySign>
 		<IsPackable>true</IsPackable>
 		<PackageProjectUrl>https://github.com/zhuovi/XiaoFeng.Core</PackageProjectUrl>
