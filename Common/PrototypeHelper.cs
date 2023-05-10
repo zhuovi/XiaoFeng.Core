@@ -1179,7 +1179,7 @@ namespace XiaoFeng
         public static string ReplacePattern(this string _, string pattern, string replacement = "", RegexOptions options = RegexOptions.IgnoreCase)
         {
             if (_.IsNullOrEmpty() || pattern.IsNullOrEmpty()) return _;
-            return Regex.Replace(_, pattern, replacement, options);
+            return Regex.Replace(_, pattern, replacement ?? "", options);
         }
         /// <summary>
         /// 在指定的输入子字符串内，使用 System.Text.RegularExpressions.MatchEvaluator 委托返回的字符串替换与某个正则表达式模式匹配的字符串（其数目为指定的最大数目）。
@@ -1872,10 +1872,10 @@ namespace XiaoFeng
                         return Convert.ToInt16(_val, 8).GetValue(targetType, out isGeneric);
                     }
                     else if (targetType == typeof(sbyte))*/
-                    return (sbyte)o;
+                    return Convert.ToSByte(o);
                 }
                 else if (sourceType == typeof(sbyte) && targetType == typeof(byte))
-                    return (byte)o;
+                    return Convert.ToByte(o);
                 if (_val.IsMatch(@"^(true|false)$"))
                 {
                     return Convert.ChangeType(_val.Trim().EqualsIgnoreCase("true") ? 1 : 0, targetType);
