@@ -29,41 +29,61 @@ XiaoFeng.Core generator with [XiaoFeng.Core](https://github.com/zhuovi/XiaoFeng.
 .NET CLI
 
 ```
-$ dotnet add package XiaoFeng.Core --version 2.2.1
+$ dotnet add package XiaoFeng.Core --version 2.2.2
 ```
 
 Package Manager
 
 ```
-PM> Install-Package XiaoFeng.Core --Version 2.2.1
+PM> Install-Package XiaoFeng.Core --Version 2.2.2
 ```
 
 PackageReference
 
 ```
-<PackageReference Include="XiaoFeng.Core" Version="2.2.1" />
+<PackageReference Include="XiaoFeng.Core" Version="2.2.2" />
 ```
 Paket CLI
 
 ```
-> paket add XiaoFeng.Core --version 2.2.1
+> paket add XiaoFeng.Core --version 2.2.2
 ```
 
 Script & Interactive
 
 ```
-> #r "nuget: XiaoFeng.Core, 2.2.1"
+> #r "nuget: XiaoFeng.Core, 2.2.2"
 ```
 
 Cake
 
 ```
 // Install XiaoFeng.Core as a Cake Addin
-#addin nuget:?package=XiaoFeng.Core&version=2.2.1
+#addin nuget:?package=XiaoFeng.Core&version=2.2.2
 
 // Install XiaoFeng.Core as a Cake Tool
-#tool nuget:?package=XiaoFeng.Core&version=2.2.1
+#tool nuget:?package=XiaoFeng.Core&version=2.2.2
 ```
+
+## 2023-05-16      v 2.2.2 
+
+1.优化DataHelperX;
+
+2.优化ToCast Byte转SByte;
+
+3.优化ResponseMessage为空的字段不显示;
+
+4.修复判断身份证号正则,JSON正则bug;
+
+5.增加ToJson是否忽略定义节点;
+
+6.增加ToJson长整型大于9007199254740992时是否序列化成字符串节点;
+
+7.修复JSON序列化长整型大于9007199254740992时前端显示0的问题;
+
+---
+
+
 # XiaoFeng 类库包含库
 | 命名空间 | 所属类库 | 开源状态 | 说明 | 包含功能 |
 | :----| :---- | :---- | :----: | :---- |
