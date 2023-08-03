@@ -7,7 +7,6 @@ using System.Data;
 using System.Reflection;
 using System.Data.Common;
 using XiaoFeng.Model;
-using XiaoFeng.Excel;
 /****************************************************************
 *  Copyright © (2017) www.fayelf.com All Rights Reserved.       *
 *  Author : jacky                                               *

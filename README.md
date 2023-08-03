@@ -29,41 +29,58 @@ XiaoFeng.Core generator with [XiaoFeng.Core](https://github.com/zhuovi/XiaoFeng.
 .NET CLI
 
 ```
-$ dotnet add package XiaoFeng.Core --version 2.2.2
+$ dotnet add package XiaoFeng.Core --version 2.3.0
 ```
 
 Package Manager
 
 ```
-PM> Install-Package XiaoFeng.Core --Version 2.2.2
+PM> Install-Package XiaoFeng.Core --Version 2.3.0
 ```
 
 PackageReference
 
 ```
-<PackageReference Include="XiaoFeng.Core" Version="2.2.2" />
+<PackageReference Include="XiaoFeng.Core" Version="2.3.0" />
 ```
 Paket CLI
 
 ```
-> paket add XiaoFeng.Core --version 2.2.2
+> paket add XiaoFeng.Core --version 2.3.0
 ```
 
 Script & Interactive
 
 ```
-> #r "nuget: XiaoFeng.Core, 2.2.2"
+> #r "nuget: XiaoFeng.Core, 2.3.0"
 ```
 
 Cake
 
 ```
 // Install XiaoFeng.Core as a Cake Addin
-#addin nuget:?package=XiaoFeng.Core&version=2.2.2
+#addin nuget:?package=XiaoFeng.Core&version=2.3.0
 
 // Install XiaoFeng.Core as a Cake Tool
-#tool nuget:?package=XiaoFeng.Core&version=2.2.2
+#tool nuget:?package=XiaoFeng.Core&version=2.3.0
 ```
+
+## 2023-08-03   v 2.3.0
+
+1.删除过渡命名空间XiaoFeng.Model.Core;
+2.优化通过模型生成数据表;
+3.新增索引属性TableIndexAttribute;
+4.新增模型索引属性;新增获取模型索引属性;
+5.新增查找数据库表是否存在;
+6.修复获取枚举GetDescription时无当前枚举时报错;
+7.增加调度作业Ijob中参数可通过方法分步设置;
+8.设置作业任务接口IJobWorker;
+9.增加FayFile的GetBytes,GetText()方法;
+10.ConfigSet增加泛路径设置,一个配置模型匹配多个配置文件;
+11.更新线程池清除过期时间长度为10分钟;
+12.修复在NETSTANDARD 2.0下没有Split(char )方法;
+13.修复mysql中date_format格式;
+14.修复HttpRequest中ClentCertificates改为ClientCertificates;
 
 ## 2023-05-16      v 2.2.2 
 
