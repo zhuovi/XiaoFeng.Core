@@ -9,7 +9,7 @@
 		<Copyright>CopyRight © 2008-2024 魔法精灵(www.eelf.cn) QQ:7092734 Email:jacky@eelf.cn</Copyright>
 		<Company>魔法精灵</Company>
 		<VersionPrefix>2.3</VersionPrefix>
-		<VersionSuffix>0</VersionSuffix>
+		<VersionSuffix>1</VersionSuffix>
 		<Version>$(VersionPrefix).$(VersionSuffix)</Version>
 		<FileVersion>$(Version)</FileVersion>
 		<AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
@@ -26,7 +26,7 @@
 		<PackageProjectUrl>https://www.eelf.cn</PackageProjectUrl>
 		<PackageTags>XiaoFeng;FAYELF;DataHelper;HttpHelper;JSON;XML;</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageReleaseNotes>删除过渡命名空间XiaoFeng.Model.Core;优化通过模型生成数据表;新增索引属性TableIndexAttribute;新增模型索引属性;新增获取模型索引属性;新增查找数据库表是否存在;修复获取枚举GetDescription时无当前枚举时报错;增加调度作业Ijob中参数可通过方法分步设置;设置作业任务接口IJobWorker;增加FayFile的GetBytes,GetText()方法;ConfigSet增加泛路径设置,一个配置模型匹配多个配置文件;更新线程池清除过期时间长度为10分钟;修复在NETSTANDARD 2.0下没有Split(char )方法;修复mysql中date_format格式;修复HttpRequest中ClentCertificates改为ClientCertificates;</PackageReleaseNotes>
+		<PackageReleaseNotes>HttpHelper中HttpSocket获取Https优化;XiaoFeng设置中增加调度日志输出等级设置,默认是Warn;增加ParameterCollection类专一来处理参数排序拼接;修改JobScheduler输出日志等级;</PackageReleaseNotes>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<DelaySign>False</DelaySign>
