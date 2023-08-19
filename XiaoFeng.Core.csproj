@@ -26,7 +26,7 @@
 		<PackageProjectUrl>https://www.eelf.cn</PackageProjectUrl>
 		<PackageTags>XiaoFeng;FAYELF;DataHelper;HttpHelper;JSON;XML;</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageReleaseNotes>HttpHelper中HttpSocket获取Https优化;XiaoFeng设置中增加调度日志输出等级设置,默认是Warn;增加ParameterCollection类专一来处理参数排序拼接;修改JobScheduler输出日志等级;</PackageReleaseNotes>
+		<PackageReleaseNotes>HttpHelper中HttpSocket获取Https优化;XiaoFeng设置中增加调度日志输出等级设置,默认是Warn;增加ParameterCollection类专一来处理参数排序拼接;修改JobScheduler输出日志等级;增加将枚举转换换成字符串大小写表示形式;</PackageReleaseNotes>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<DelaySign>False</DelaySign>
