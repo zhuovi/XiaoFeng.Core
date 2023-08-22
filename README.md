@@ -29,41 +29,62 @@ XiaoFeng.Core generator with [XiaoFeng.Core](https://github.com/zhuovi/XiaoFeng.
 .NET CLI
 
 ```
-$ dotnet add package XiaoFeng.Core --version 2.3.0
+$ dotnet add package XiaoFeng.Core --version 2.3.3
 ```
 
 Package Manager
 
 ```
-PM> Install-Package XiaoFeng.Core --Version 2.3.0
+PM> Install-Package XiaoFeng.Core --Version 2.3.3
 ```
 
 PackageReference
 
 ```
-<PackageReference Include="XiaoFeng.Core" Version="2.3.0" />
+<PackageReference Include="XiaoFeng.Core" Version="2.3.3" />
 ```
 Paket CLI
 
 ```
-> paket add XiaoFeng.Core --version 2.3.0
+> paket add XiaoFeng.Core --version 2.3.3
 ```
 
 Script & Interactive
 
 ```
-> #r "nuget: XiaoFeng.Core, 2.3.0"
+> #r "nuget: XiaoFeng.Core, 2.3.3"
 ```
 
 Cake
 
 ```
 // Install XiaoFeng.Core as a Cake Addin
-#addin nuget:?package=XiaoFeng.Core&version=2.3.0
+#addin nuget:?package=XiaoFeng.Core&version=2.3.3
 
 // Install XiaoFeng.Core as a Cake Tool
-#tool nuget:?package=XiaoFeng.Core&version=2.3.0
+#tool nuget:?package=XiaoFeng.Core&version=2.3.3
 ```
+# 更新日志
+
+## 2023-08-22   v 2.3.3
+
+1.HttpHelper中HttpSocket获取Https优化;
+
+2.XiaoFeng设置中增加调度日志输出等级设置,默认是Warn;
+
+3.增加ParameterCollection类专一来处理参数排序拼接;
+
+4.修改JobScheduler输出日志等级;
+
+5.增加将枚举转换换成字符串大小写表示形式;
+
+6.ParameterCollection类增加GetBytes方法,增加多种构造器可以设置是否URL编码及字符串编码;
+
+7.增加扩展RSAEncryption算法SignHash,VerifyHash;
+
+8.修复Json,Xml中类型为可空枚举时,应该序列化成key则序列化成value的bug;
+
+9.优化Redis关闭;
 
 ## 2023-08-03   v 2.3.0
 

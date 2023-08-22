@@ -5,12 +5,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Security;
 using System.Net.Sockets;
+using System.Runtime.InteropServices.ComTypes;
+using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using XiaoFeng.IO;
-using XiaoFeng.Net;
 
 /****************************************************************
 *  Copyright © (2023) www.fayelf.com All Rights Reserved.       *
@@ -66,7 +67,7 @@ namespace XiaoFeng.Http
 		/// <summary>
 		/// 请求客户端
 		/// </summary>
-		private ISocketClient Client { get; set; }
+		private Stream Client { get; set; }
 		#endregion
 
 		#region 方法
@@ -166,7 +167,7 @@ namespace XiaoFeng.Http
 		/// </summary>
 		/// <param name="uri">请求地址</param>
 		/// <returns></returns>
-		private async Task<ISocketClient> GetClient(Uri uri)
+		private async Task<Stream> GetClient(Uri uri)
 		{
 			if (this.Request.CertPath.IsNotNullOrEmpty())
 			{
@@ -181,25 +182,87 @@ namespace XiaoFeng.Http
 			}
 			if (this.Request.WebProxy != null)
 				uri = this.Request.WebProxy.Address;
-			if (this.Client != null) this.Client.Stop();
-			this.Client = new SocketClient(uri.Host, uri.Port)
+			if (this.Client != null) this.Client.Close();
+			var socket= new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+			socket.ReceiveTimeout = this.Request.ReadWriteTimeout;
+			socket.SendTimeout = this.Request.ReadWriteTimeout;
+			socket.NoDelay = true;
+
+			var state = socket.BeginConnect(uri.Host, uri.Port, null, null);
+			if (state.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(Math.Max(this.Request.Timeout, 30)), true))
+				return await Task.FromResult<Stream>(null);
+			socket.EndConnect(state);
+			var netStream = new NetworkStream(socket, true);
+            if (uri.Scheme.ToUpper() == "HTTPS")
 			{
-				ReceiveTimeout = this.Request.ReadWriteTimeout,
-				SendTimeout = this.Request.ReadWriteTimeout,
-				ClientCertificates = this.Request.ClientCertificates,
-				NoDelay = true
-			};
-			await this.Client.ConnectAsync();
+                var sslStream = new SslStream(netStream, false, (sender, cert, chain, error) =>
+                {
+                    return error == SslPolicyErrors.None;
+                });
+				if (this.Request.ClientCertificates != null && this.Request.ClientCertificates.Count > 0)
+				{
+					sslStream.AuthenticateAsClient(uri.Host, this.Request.ClientCertificates,SslProtocols.Ssl2, false);
+				}
+				else
+					sslStream.AuthenticateAsClient(uri.Host);
+				if (sslStream.IsAuthenticated)
+				{
+                    sslStream.ReadTimeout = this.Request.ReadWriteTimeout;
+                    sslStream.WriteTimeout = this.Request.ReadWriteTimeout;
+					this.Client = sslStream;
+                }
+			}
 			return await Task.FromResult(this.Client);
 		}
-		#endregion
+        #endregion
 
-		#region 发送请求
-		/// <summary>
-		/// 发送请求
-		/// </summary>
-		/// <returns></returns>
-		public async Task<HttpResponse> SendRequestAsync()
+        #region 接收消息
+        /// <summary>
+        /// 接收消息
+        /// </summary>
+        /// <returns></returns>
+        public async Task<byte[]> ReceviceMessageAsync()
+		{
+			var stream = this.Client;
+            if (stream == null) return Array.Empty<byte>();
+            int readsize = -1;
+            var buffer = new MemoryStream();
+            var dataBuffer = new byte[65535];
+            do
+            {
+                try
+                {
+                    readsize = await stream.ReadAsync(dataBuffer, 0, 65535);
+                    await buffer.WriteAsync(dataBuffer, 0, readsize);
+                }
+                catch (SocketException ex)
+                {
+					return await Task.FromResult(ex.Message.GetBytes());
+                }
+                catch (IOException ex)
+                {
+                    return await Task.FromResult(ex.Message.GetBytes());
+                }
+                catch (Exception ex)
+                {
+                    return await Task.FromResult(ex.Message.GetBytes());
+                }
+            } while (readsize > 0 && ((NetworkStream)stream).DataAvailable);
+
+            if (buffer.Length == 0) return Array.Empty<byte>();
+            var bytes = buffer.ToArray();
+            buffer.Close();
+            buffer.Dispose();
+            return bytes;
+        }
+        #endregion
+
+        #region 发送请求
+        /// <summary>
+        /// 发送请求
+        /// </summary>
+        /// <returns></returns>
+        public async Task<HttpResponse> SendRequestAsync()
 		{
 			this.Response = new HttpResponse();
 			var url = this.Request.Address;
@@ -230,11 +293,15 @@ namespace XiaoFeng.Http
 			}
 			var RequestHeader = this.CreateRequestHeader(requestUri);
 			var bytes = RequestHeader.GetBytes(this.Request.Encoding);
-			await this.GetClient(requestUri).ConfigureAwait(false);
-			if (requestUri.Scheme.ToUpper() == "HTTPS") this.Client.HostName = requestUri.Host;
-			await this.Client.SendAsync(bytes).ConfigureAwait(false);
-			await this.Client.SendAsync(RequestBody).ConfigureAwait(false);
-			var resonseBytes = await this.Client.ReceviceMessageAsync();
+			var stream = await this.GetClient(requestUri).ConfigureAwait(false);
+			if (stream == null)
+			{
+				this.Response.Data = "SSl认证失败.".GetBytes();
+				return await Task.FromResult(this.Response);
+			}
+			await this.Client.WriteAsync(bytes, 0, bytes.Length).ConfigureAwait(false);
+			await this.Client.WriteAsync(RequestBody, 0, RequestBody.Length).ConfigureAwait(false);
+			var resonseBytes = await this.ReceviceMessageAsync().ConfigureAwait(false);
 
 			var buffers = new MemoryStream(resonseBytes);
 			//发送头
@@ -438,7 +505,8 @@ namespace XiaoFeng.Http
 		{
 			if (this.Client != null)
 			{
-				this.Client.Stop();
+				this.Client.Close();
+				this.Client = null;
 			}
 			base.Dispose(disposing);
 		}
@@ -449,8 +517,9 @@ namespace XiaoFeng.Http
 		{
 			Dispose(true);
 		}
-		#endregion
+        #endregion
 
-		#endregion
-	}
+        #endregion
+
+    }
 }
