@@ -143,21 +143,25 @@ namespace XiaoFeng.Redis.IO
 
         #region 关闭
         /// <summary>
+        /// Redis锁
+        /// </summary>
+        private static object RedisState = new object();
+        /// <summary>
         /// 关闭
         /// </summary>
         public void Close()
         {
             try
             {
-                if (this.Stream != null)
+
+                lock (RedisState)
                 {
-                    this.Stream?.Close();
-                    this.Stream?.Dispose();
-                }
-                if (this.SocketClient != null)
-                {
-                    this.SocketClient?.Close();
-                    this.SocketClient?.Dispose();
+                    if (this.Stream != null)
+                    {
+                        this.Stream?.Close();
+                        this.Stream?.Dispose();
+                        this.Stream = null;
+                    }
                 }
             }
             catch (IOException ie)
