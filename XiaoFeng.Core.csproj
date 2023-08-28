@@ -9,7 +9,7 @@
 		<Copyright>CopyRight © 2008-2024 魔法精灵(www.eelf.cn) QQ:7092734 Email:jacky@eelf.cn</Copyright>
 		<Company>魔法精灵</Company>
 		<VersionPrefix>2.3</VersionPrefix>
-		<VersionSuffix>3</VersionSuffix>
+		<VersionSuffix>4</VersionSuffix>
 		<Version>$(VersionPrefix).$(VersionSuffix)</Version>
 		<FileVersion>$(Version)</FileVersion>
 		<AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
@@ -25,7 +25,7 @@
 		<PackageIconUrl>http://nuget.fayelf.com/x.png</PackageIconUrl>
 		<PackageProjectUrl>https://www.eelf.cn</PackageProjectUrl>
 		<PackageTags>XiaoFeng;FAYELF;DataHelper;HttpHelper;JSON;XML;</PackageTags>
-		<PackageReleaseNotes>HttpHelper中HttpSocket获取Https优化;XiaoFeng设置中增加调度日志输出等级设置,默认是Warn;增加ParameterCollection类专一来处理参数排序拼接;修改JobScheduler输出日志等级;增加将枚举转换换成字符串大小写表示形式;ParameterCollection类增加GetBytes方法,增加多种构造器可以设置是否URL编码及字符串编码;增加扩展RSAEncryption算法SignHash,VerifyHash;修复Json,Xml中类型为可空枚举时,应该序列化成key则序列化成value的bug;优化Redis关闭;</PackageReleaseNotes>
+		<PackageReleaseNotes>优化Redis有时为无限等待bug;</PackageReleaseNotes>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<DelaySign>False</DelaySign>
