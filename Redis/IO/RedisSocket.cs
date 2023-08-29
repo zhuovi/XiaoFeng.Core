@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Net.Security;
 using System.Net.Sockets;
-using XiaoFeng.Net;
 
 /****************************************************************
 *  Copyright © (2022) www.fayelf.com All Rights Reserved.       *
@@ -54,7 +53,7 @@ namespace XiaoFeng.Redis.IO
         /// <summary>
         /// 是否连接
         /// </summary>
-        public Boolean IsConnected => this.Client != null && Client.Connected;
+        public Boolean IsConnected => this.SocketClient != null && SocketClient.Connected;
         /// <summary>
         /// 寻址方案
         /// </summary>
@@ -91,10 +90,6 @@ namespace XiaoFeng.Redis.IO
         /// 库索引
         /// </summary>
         public int? DbNum { get; set; }
-        /// <summary>
-        /// 客户端
-        /// </summary>
-        private ISocketClient Client { get; set; }
         #endregion
 
         #region 方法
@@ -103,16 +98,6 @@ namespace XiaoFeng.Redis.IO
         /// </summary>
         private void Init()
         {
-            if (this.Client != null) this.Client.Stop();
-            this.Client = new SocketClient()
-            {
-                SocketType = this.SocketType,
-                ConnectTimeout = this.ConnConfig.ConnectionTimeout,
-                ReceiveTimeout = this.ReceiveTimeout,
-                SendTimeout = this.SendTimeout,
-                ProtocolType = this.ProtocolType
-            };
-            /*
             if (this.Stream != null)
             {
                 this.Stream.Close();
@@ -128,35 +113,24 @@ namespace XiaoFeng.Redis.IO
             this.SocketClient = new Socket(this.AddressFamily, this.SocketType, this.ProtocolType);
             this.SocketClient.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.SendTimeout, this.SendTimeout);
             this.SocketClient.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, this.ReceiveTimeout);
-        */
         }
         ///<inheritdoc/>
         public void Connect()
         {
             Init();
-            var state = this.Client.Connect(this.ConnConfig.Host, this.ConnConfig.Port);
-            if (state == SocketError.Success)
-            {
-                this.GetStream();
-            }
-            else if(state == SocketError.TimedOut)
-            {
-                throw new RedisException($"连接服务器超时.{this.ConnConfig.ToJson()}");
-            }
-            /*IAsyncResult result = this.SocketClient.BeginConnect(System.Net.Dns.GetHostAddresses(this.ConnConfig.Host), this.ConnConfig.Port, null, null);
+            IAsyncResult result = this.SocketClient.BeginConnect(System.Net.Dns.GetHostAddresses(this.ConnConfig.Host), this.ConnConfig.Port, null, null);
             if (!result.AsyncWaitHandle.WaitOne(Math.Max(this.ConnConfig.ConnectionTimeout, 10000), true))
                 throw new RedisException($"连接服务器超时.{this.ConnConfig.ToJson()}");
             
 			this.SocketClient.EndConnect(result);
-			this.GetStream();*/
+			this.GetStream();
 		}
         ///<inheritdoc/>
         public Stream GetStream()
         {
             if (this.Stream != null) return this.Stream;
 
-            return this.Stream = this.Client.GetSslStream();
-            /*var ns = new NetworkStream(this.SocketClient, true);
+            var ns = new NetworkStream(this.SocketClient, true);
 
             if (!this.IsSsl) { this.Stream = ns; return ns; }
 
@@ -164,7 +138,7 @@ namespace XiaoFeng.Redis.IO
             sns.AuthenticateAsClient(this.ConnConfig.Host);
 
             this.Stream = sns;
-            return sns;*/
+            return sns;
         }
 
         #region 关闭
@@ -176,8 +150,6 @@ namespace XiaoFeng.Redis.IO
             try
             {
                 this.IsAuth = false;
-                if (this.Client != null)
-                    this.Client?.Stop();
                 if (this.Stream != null)
                 {
                     this.Stream?.Close();
