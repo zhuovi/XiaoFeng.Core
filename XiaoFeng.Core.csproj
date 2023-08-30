@@ -25,7 +25,7 @@
 		<PackageIconUrl>http://nuget.fayelf.com/x.png</PackageIconUrl>
 		<PackageProjectUrl>https://www.eelf.cn</PackageProjectUrl>
 		<PackageTags>XiaoFeng;FAYELF;DataHelper;HttpHelper;JSON;XML;</PackageTags>
-		<PackageReleaseNotes>优化Redis有时为无限等待bug;优化Redis连接;优化ParameterCollection;</PackageReleaseNotes>
+		<PackageReleaseNotes>增加作业Job设置取消指令方法,启动设置取消指令方法;</PackageReleaseNotes>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<DelaySign>False</DelaySign>
