@@ -25,7 +25,7 @@
 		<PackageIconUrl>http://nuget.fayelf.com/x.png</PackageIconUrl>
 		<PackageProjectUrl>https://www.eelf.cn</PackageProjectUrl>
 		<PackageTags>XiaoFeng;FAYELF;DataHelper;HttpHelper;JSON;XML;</PackageTags>
-		<PackageReleaseNotes>增加作业Job设置取消指令方法,启动设置取消指令方法;优化IJob事件;</PackageReleaseNotes>
+		<PackageReleaseNotes>增加作业Job设置取消指令方法,启动设置取消指令方法;优化IJob事件;优化For扩展方法;增加HttpHelper中HttpRequest类中直接可以调用DownFileAsync;ParameterCollection中增加ToJson方法;优化正则表达式网址,Ftp正则增加汉字识别;</PackageReleaseNotes>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<DelaySign>False</DelaySign>

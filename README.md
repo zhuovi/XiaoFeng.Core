@@ -66,6 +66,30 @@ Cake
 ```
 # 更新日志
 
+##  v 2.3.5
+
+### Job 作业
+
+1.增加作业Job设置取消指令方法,启动设置取消指令方法;
+
+2.优化IJob事件;
+
+### XiaoFeng.ParameterCollection 参数集
+
+1.ParameterCollection中增加ToJson方法;
+
+### XiaoFeng.Http 网络库
+
+1.增加HttpHelper中HttpRequest类中直接可以调用DownFileAsync;
+
+### XiaoFeng.PrototypeHelper 扩展方法
+
+1.优化For扩展方法;
+
+### 正则表达式
+
+1.优化正则表达式网址,Ftp正则增加汉字识别;
+
 ## 2023-08-29   v 2.3.4
 
 1.优化Redis有时为无限等待bug;
