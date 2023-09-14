@@ -25,7 +25,7 @@
 		<PackageIconUrl>http://nuget.fayelf.com/x.png</PackageIconUrl>
 		<PackageProjectUrl>https://www.eelf.cn</PackageProjectUrl>
 		<PackageTags>XiaoFeng;FAYELF;DataHelper;HttpHelper;JSON;XML;</PackageTags>
-		<PackageReleaseNotes>增加作业Job设置取消指令方法,启动设置取消指令方法;优化IJob事件;优化For扩展方法;增加HttpHelper中HttpRequest类中直接可以调用DownFileAsync;ParameterCollection中增加ToJson方法;优化正则表达式网址,Ftp正则增加汉字识别;增加扩展方法Object.ToStringX();优化扩展方法GetValue中字符串转换对象的匹配;优化Json可以把对象转成字符串的属性StringObjectConverter;</PackageReleaseNotes>
+		<PackageReleaseNotes>增加作业Job设置取消指令方法,启动设置取消指令方法;优化IJob事件;优化For扩展方法;增加HttpHelper中HttpRequest类中直接可以调用DownFileAsync;ParameterCollection中增加ToJson方法;优化正则表达式网址,Ftp正则增加汉字识别;增加扩展方法Object.ToStringX();优化扩展方法GetValue中字符串转换对象的匹配;优化Json可以把对象转成字符串的属性StringObjectConverter;Setting设置Job消息日志最大条数;优化作业调度,把一次性作业,间隔作业独立处理,提高定时调度性能,优化作业记录日志最大记录减少内存开支;任务队列升级到可多线程消费任务;优化调度作业取消事件;</PackageReleaseNotes>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<DelaySign>False</DelaySign>
