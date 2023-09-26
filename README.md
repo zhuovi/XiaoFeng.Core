@@ -29,40 +29,40 @@ XiaoFeng.Core generator with [XiaoFeng.Core](https://github.com/zhuovi/XiaoFeng.
 .NET CLI
 
 ```
-$ dotnet add package XiaoFeng.Core --version 2.3.4
+$ dotnet add package XiaoFeng.Core --version 2.3.5
 ```
 
 Package Manager
 
 ```
-PM> Install-Package XiaoFeng.Core --Version 2.3.4
+PM> Install-Package XiaoFeng.Core --Version 2.3.5
 ```
 
 PackageReference
 
 ```
-<PackageReference Include="XiaoFeng.Core" Version="2.3.4" />
+<PackageReference Include="XiaoFeng.Core" Version="2.3.5" />
 ```
 Paket CLI
 
 ```
-> paket add XiaoFeng.Core --version 2.3.4
+> paket add XiaoFeng.Core --version 2.3.5
 ```
 
 Script & Interactive
 
 ```
-> #r "nuget: XiaoFeng.Core, 2.3.4"
+> #r "nuget: XiaoFeng.Core, 2.3.5"
 ```
 
 Cake
 
 ```
 // Install XiaoFeng.Core as a Cake Addin
-#addin nuget:?package=XiaoFeng.Core&version=2.3.4
+#addin nuget:?package=XiaoFeng.Core&version=2.3.5
 
 // Install XiaoFeng.Core as a Cake Tool
-#tool nuget:?package=XiaoFeng.Core&version=2.3.4
+#tool nuget:?package=XiaoFeng.Core&version=2.3.5
 ```
 # 更新日志
 
@@ -86,9 +86,29 @@ Cake
 
 1.优化For扩展方法;
 
+2.增加扩展方法Object.ToStringX();
+
+3.优化扩展方法GetValue中字符串转换对象的匹配;
+
 ### 正则表达式
 
 1.优化正则表达式网址,Ftp正则增加汉字识别;
+
+### XiaoFeng.Json
+
+1.优化Json可以把对象转成字符串的属性StringObjectConverter;
+
+### XiaoFeng.Threading
+
+1.Setting设置Job消息日志最大条数;
+
+2.优化作业调度,把一次性作业,间隔作业独立处理,提高定时调度性能,优化作业记录日志最大记录减少内存开支;
+
+3.任务队列升级到可多线程消费任务;优化调度作业取消事件;
+
+### XiaoFeng.Log
+
+1.升级日志,增加高并发下日志写的没有输入多时导致内存一直上涨的问题,队列数据超过65535就清空一次队列;
 
 ## 2023-08-29   v 2.3.4
 
