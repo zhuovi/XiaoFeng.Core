@@ -25,7 +25,7 @@
 		<PackageIconUrl>http://nuget.fayelf.com/x.png</PackageIconUrl>
 		<PackageProjectUrl>https://www.eelf.cn</PackageProjectUrl>
 		<PackageTags>XiaoFeng;FAYELF;DataHelper;HttpHelper;JSON;XML;</PackageTags>
-		<PackageReleaseNotes>新增Enum判断是否有指定特性方法IsDefined;</PackageReleaseNotes>
+		<PackageReleaseNotes>新增Enum判断是否有指定特性方法IsDefined;修复Redis中publish时返回结果状态不对的bug;</PackageReleaseNotes>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<DelaySign>False</DelaySign>
