@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -88,10 +87,17 @@ namespace XiaoFeng.Xml
         {
             var type = this.ObjectType;
             var rootName = this.SerializerSetting.DefaultRootName;
-            if (type != null && type.IsDefined(typeof(XmlRootAttribute), false))
+            if (type != null)
             {
-                var root = type.GetCustomAttribute<XmlRootAttribute>();
-                rootName = root.ElementName.IfEmpty(type.Name);
+                if (type.IsDefined(typeof(XmlRootAttribute), false))
+                {
+                    var root = type.GetCustomAttribute<XmlRootAttribute>();
+                    rootName = root.ElementName.IfEmpty(type.Name);
+                }
+                else
+                {
+                    rootName = type.IsGenericType ? "Root" : type.Name;
+                }
             }
             using (var ms = new MemoryStream())
             {
@@ -101,17 +107,17 @@ namespace XiaoFeng.Xml
                     Encoding = this.SerializerSetting.DefaultEncoding.WebName == "UTF-8" ? new UTF8Encoding(false) : this.SerializerSetting.DefaultEncoding,
                     OmitXmlDeclaration = this.SerializerSetting.OmitXmlDeclaration,
                     NewLineChars = this.SerializerSetting.NewLineChars,
-                    NamespaceHandling= this.SerializerSetting.NamespaceHandling
+                    NamespaceHandling = this.SerializerSetting.NamespaceHandling
                 }))
                 {
-                    XmlWriter.WriteStartElement(rootName);
+                    if (rootName.IsNotNullOrEmpty()) XmlWriter.WriteStartElement(rootName);
                     if (!this.SerializerSetting.OmitNamespace)
                     {
                         XmlWriter.WriteAttributeString("xmlns", "xsi", "", "http://www.w3.org/2001/XMLSchema-instance");
                         XmlWriter.WriteAttributeString("xmlns", "xsd", "", "http://www.w3.org/2001/XMLSchema");
                     }
                     this.WriteValue(this.Data);
-                    XmlWriter.WriteEndDocument();
+                    if (rootName.IsNotNullOrEmpty()) XmlWriter.WriteEndDocument();
                 }
                 this.Bytes = ms.ToArray();
                 XmlWriter.Close();
@@ -183,6 +189,39 @@ namespace XiaoFeng.Xml
                 else
                     XmlWriter.WriteString(EncodeString(data.ToString()));
                 if (tagName.IsNotNullOrEmpty()) XmlWriter.WriteEndElement();
+                return;
+            }
+            else if (data is XmlValue xvalue)
+            {
+                if (xvalue.IsEmpty && this.SerializerSetting.OmitEmptyNode) return;
+
+                if (tagName.IsNullOrEmpty()) tagName = xvalue.Name;
+                XmlWriter.WriteStartElement(tagName);
+                if (xvalue.HasAttributes)
+                {
+                    xvalue.Attributes.Each(a =>
+                    {
+                        XmlWriter.WriteAttributeString(a.Name, a.Value.getValue());
+                    });
+                }
+                if (xvalue.HasChildNodes)
+                {
+                    xvalue.ChildNodes.Each(c =>
+                    {
+                        this.WriteValue(c, c.ElementType == XmlType.CDATA, c.Name);
+                    });
+                }
+                else
+                {
+                    if (xvalue.Value.IsNotNullOrEmpty())
+                    {
+                        if (xvalue.ElementType == XmlType.CDATA)
+                            XmlWriter.WriteCData(xvalue.Value.getValue());
+                        else
+                            XmlWriter.WriteString(xvalue.Value.getValue());
+                    }
+                }
+                XmlWriter.WriteEndElement();
                 return;
             }
             else

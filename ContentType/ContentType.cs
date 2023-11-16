@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using XiaoFeng.Config;
 /****************************************************************
 *  Copyright © (2017) www.fayelf.com All Rights Reserved.       *
@@ -26,13 +23,13 @@ namespace XiaoFeng
         /// </summary>
         static ContentTypes()
         {
-            var list = ContentTypeMapping.Current.Mimes;
+            var list = ContentTypeMapping.Current.List;
             if (list != null && list.Count > 0)
             {
                 Data.Clear();
                 list.Each(a =>
                 {
-                    Data.Add(a.Ext, a.Value);
+                    Data.Add(a.Ext.Trim('.'), a.Mime);
                 });
             }
         }
