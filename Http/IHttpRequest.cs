@@ -124,10 +124,10 @@ namespace XiaoFeng.Http
         /// 获取或设置 Referer HTTP 标头的值。
         /// </summary>
         string Referer { get; set; }
-		/// <summary>
-		/// 数据
-		/// </summary>
-		IDictionary<string, string> Data { get; set; }
+        /// <summary>
+        /// 数据
+        /// </summary>
+        IDictionary<string, string> Data { get; set; }
         /// <summary>
         /// Body请求数据
         /// </summary>
@@ -181,6 +181,31 @@ namespace XiaoFeng.Http
         /// <param name="value">值</param>
         /// <returns>请求对象</returns>
         IHttpRequest AddCookie(string name, string value);
+        /// <summary>
+        /// 添加Cookie
+        /// </summary>
+        /// <param name="name">名称</param>
+        /// <param name="value">值</param>
+        /// <param name="path">路径</param>
+        /// <param name="domain">域名</param>
+        /// <returns></returns>
+        IHttpRequest AddCookie(string name, string value, string path, string domain);
+        /// <summary>
+        /// 添加Cookie
+        /// </summary>
+        /// <param name="name">名称</param>
+        /// <param name="value">值</param>
+        /// <param name="path">路径</param>
+        /// <returns></returns>
+        IHttpRequest AddCookie(string name, string value, string path);
+        /// <summary>
+        /// 添加Cookie
+        /// </summary>
+        /// <param name="name">名称</param>
+        /// <param name="value">值</param>
+        /// <param name="timeSpan">过期间隔</param>
+        /// <returns>请求对象</returns>
+        IHttpRequest AddCookie(string name, string value, TimeSpan? timeSpan);
         /// <summary>
         /// 添加Cookie
         /// </summary>
@@ -370,6 +395,6 @@ namespace XiaoFeng.Http
         /// <param name="httpCore">请求内核</param>
         /// <returns>请求对象</returns>
         IHttpRequest SetHttpCore(HttpCore httpCore);
-        
+
     }
 }
