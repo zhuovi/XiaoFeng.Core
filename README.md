@@ -29,44 +29,52 @@ XiaoFeng.Core generator with [XiaoFeng.Core](https://github.com/zhuovi/XiaoFeng.
 .NET CLI
 
 ```
-$ dotnet add package XiaoFeng.Core --version 2.3.5
+$ dotnet add package XiaoFeng.Core --version 2.3.6
 ```
 
 Package Manager
 
 ```
-PM> Install-Package XiaoFeng.Core --Version 2.3.5
+PM> Install-Package XiaoFeng.Core --Version 2.3.6
 ```
 
 PackageReference
 
 ```
-<PackageReference Include="XiaoFeng.Core" Version="2.3.5" />
+<PackageReference Include="XiaoFeng.Core" Version="2.3.6" />
 ```
 Paket CLI
 
 ```
-> paket add XiaoFeng.Core --version 2.3.5
+> paket add XiaoFeng.Core --version 2.3.6
 ```
 
 Script & Interactive
 
 ```
-> #r "nuget: XiaoFeng.Core, 2.3.5"
+> #r "nuget: XiaoFeng.Core, 2.3.6"
 ```
 
 Cake
 
 ```
 // Install XiaoFeng.Core as a Cake Addin
-#addin nuget:?package=XiaoFeng.Core&version=2.3.5
+#addin nuget:?package=XiaoFeng.Core&version=2.3.6
 
 // Install XiaoFeng.Core as a Cake Tool
-#tool nuget:?package=XiaoFeng.Core&version=2.3.5
+#tool nuget:?package=XiaoFeng.Core&version=2.3.6
 ```
 # 更新日志
 
-##  v 2.3.5
+## 2023-11-17   v 2.3.6
+
+1.新增Enum判断是否有指定特性方法IsDefined;
+
+2.修复Redis中publish时返回结果状态不对的bug;
+
+3.优化HttpHelper中获取Cookies;
+
+## 2023-10-27   v 2.3.5
 
 ### Job 作业
 
